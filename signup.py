@@ -53,6 +53,10 @@ def signup():
     # Register the user then return
     register(uname, pw)
 
+    # Create a file for the user
+    ufile = open("users/" + crypto.encrypt(pw, uname) + ".txt", "w")
+    ufile.close()
+
 
 # Have the user set a password, then save it
 def set_password():
@@ -179,7 +183,7 @@ def login():
     uname = input("@pv> ")
 
     # if the user chose to quit
-    if uname == "q" or uname == "Q": return 1
+    if uname == "q" or uname == "Q": return "", "", ""
 
     # Tell the user what went wrong and re-take input
     while(good_uname(uname) != -3 and uname != "q" and uname != "Q"):
@@ -188,7 +192,7 @@ def login():
         uname = input("@pv> ")
 
     # if the user chose to quit
-    if uname == "q" or uname == "Q": return 1
+    if uname == "q" or uname == "Q": return "", "", ""
 
     # Fetch the user data
     salt, pw = fetchUserData(uname)
@@ -198,7 +202,7 @@ def login():
     password = input("@pv> ")
 
     # if the user chose to quit
-    if password == "q" or password == "Q": return 1
+    if password == "q" or password == "Q": return "", "", ""
 
     # If the password is invalid, ask again
     while (crypto.checkPass(password, pw) == -1 and password != "q" and password != "Q"):
@@ -207,10 +211,10 @@ def login():
         password = input("@pv> ")
 
     # if the user chose to quit
-    if password == "q" or password == "Q": return 1
+    if password == "q" or password == "Q": return "", "", ""
 
     print(Fore.GREEN + "\n>>> Login successful!")
-    return uname, salt
+    return uname, password, salt
 
 
 # Fetch all the user data

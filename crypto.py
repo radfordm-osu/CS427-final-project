@@ -17,8 +17,8 @@ def checkPass(password, data):
     else:
         return -1
 
-def encrypt(data, key):
-    return 0
+def encrypt(key, data):
+    return data+key
 
-def decrypt(data, key):
-    return 0
+def decrypt(key, data):
+    return data.replace(key, '')

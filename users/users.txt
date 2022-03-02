@@ -1,9 +1,3 @@
-tester
-$2b$12$9s.JxFhABiEYqQU.r3d7qO
-$2b$12$9s.JxFhABiEYqQU.r3d7qONCfqMZJLaie5xX/yyOckeQSoZoFzVzm
-mradford
-$2b$12$zk8kx1GA2zRUPKOEvXT5e.
-$2b$12$zk8kx1GA2zRUPKOEvXT5e.QCUDbb83STyEwxYPiJTzyc4/os11S/m
-radfordm
-$2b$12$qMD9bSS4ulWvjWFULMpjm.
-$2b$12$qMD9bSS4ulWvjWFULMpjm.U.qdvYOe.MO0OQe0LEpghIMKcU0en/2
+dummy
+$2b$12$klmdqBwLQaVssP2yTkaPHu
+$2b$12$klmdqBwLQaVssP2yTkaPHuIX9Cos8hufqMRN.XzZfDs58kKI6WysK
