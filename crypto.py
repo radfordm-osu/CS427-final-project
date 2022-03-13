@@ -1,5 +1,8 @@
 from hashlib import sha256
 import bcrypt
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+from Crypto import Random
 
 def H(data):
     # Method 1
@@ -18,7 +21,16 @@ def checkPass(password, data):
         return -1
 
 def encrypt(key, data):
-    return data+key
+    h = SHA256.new()
+    h.update(key)
+    key = h.digest()
+
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+
+    return cipher.encrypt(data), key
 
 def decrypt(key, data):
-    return data.replace(key, '')
+    plain = AES.new(key, AES.MODE_CBC, iv)
+
+    return plain.decrypt(data)
