@@ -1,3 +1,2 @@
-dummy
-$2b$12$klmdqBwLQaVssP2yTkaPHu
-$2b$12$klmdqBwLQaVssP2yTkaPHuIX9Cos8hufqMRN.XzZfDs58kKI6WysK
+jack
+$argon2id$v=19$m=32768,t=16,p=2$5qBqqQFfr4ASBTIL3Lcj6g$xUE9ZJ7daqkye8q5Z33V5ZYIRoqPFxvsaoIcY2tKQ5k
