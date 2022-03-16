@@ -105,9 +105,9 @@ def register(name, password):
     (pw, salt) = crypto.H(password)
     ufile.write(name)
     ufile.write("\n")
-    ufile.write(salt.decode("utf-8"))
+    #ufile.write()
     ufile.write("\n")
-    ufile.write(pw.decode("utf-8"))
+    ufile.write(pw)
     ufile.write("\n")
     ufile.close()
     return 1

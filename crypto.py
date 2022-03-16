@@ -10,16 +10,16 @@ def H(data):
 #    hash = sha256()
 #    hash.update(data)
 #    final = hash.hexdigest()
-    salt = bcrypt.gensalt()
-    final = bcrypt.hashpw(data.encode('utf-8'), salt)
-    return final, salt
+    #salt = bcrypt.gensalt()
+    #final = bcrypt.hashpw(data.encode('utf-8'), salt)
+    return data, data
 
 def checkPass(password, data):
     # Hash the password against the hash
-    if bcrypt.checkpw(password.encode('utf-8'), data.encode('utf-8')):
-        return 1
-    else:
-        return -1
+    #if bcrypt.checkpw(password.encode('utf-8'), data.encode('utf-8'))
+    return 1
+   # else:
+   #     return -1
 
 def write_iv(iv, uname):
     idx = 0
@@ -36,9 +36,12 @@ def write_iv(iv, uname):
                 line_no = idx + 1
 
     # Replace the line storing the IV
-    data[line_no] = iv
+    data[line_no] = iv.decode("utf-8")
     with open("users/users.txt", "w") as file:
-        file.writelines(str(data))
+        for i in range(0, len(data)):
+            file.write(str(data[i]))
+
+        #file.writelines(str(data))
 
 def get_iv(uname):
     idx = 0
@@ -55,7 +58,7 @@ def get_iv(uname):
                 line_no = idx + 1
 
     # retrieve the IV
-    data[line_no] = iv
+    iv = data[line_no].encode("utf-8")
     return iv
 
 def encrypt(key, data, uname):
