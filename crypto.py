@@ -16,7 +16,7 @@ def H(data):
 def checkPass(password, data):
     # Hash the password against the hash
     #if bcrypt.checkpw(password.encode('utf-8'), data.encode('utf-8')):
-	ph = argon2.PasswordHasher(time_cost=16, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
+	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
 	if ph.verify(data, password):
 		return 1
 	else:
