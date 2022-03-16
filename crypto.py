@@ -9,7 +9,7 @@ def H(data):
 #    final = hash.hexdigest()
     #salt = bcrypt.gensalt()
     #final = bcrypt.hashpw(data.encode('utf-8'), salt)
-	ph = argon2.PasswordHasher(time_cost=16, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
+	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
 	final = ph.hash(data)
 	return final
 
