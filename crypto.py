@@ -38,6 +38,11 @@ def encrypt(key, data):
     return str(ct)
 
 def decrypt(key, data, iv):
+
+    h = SHA256.new()
+    h.update(key.encode("utf-8"))
+    key = h.digest()
+
     cipher = AES.new(key, AES.MODE_CBC, iv = iv)
     pt = unpad(cipher.decrypt(data), AES.block_size)
 
