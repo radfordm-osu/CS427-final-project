@@ -10,10 +10,10 @@ import os
 def getUsers():
     users = []
     with open("users/users.txt", "r") as file:
-        idx = 2;
+        idx = 1;
         for line in file:
             idx += 1
-            if idx % 3 == 0:
+            if idx % 2 == 0:
                 users.append(line.strip())
     # return what was found
     return users
@@ -181,7 +181,7 @@ def login():
     uname = input("@pv> ")
 
     # if the user chose to quit
-    if uname == "q" or uname == "Q": return "", "", ""
+    if uname == "q" or uname == "Q": return "", ""
 
     # Tell the user what went wrong and re-take input
     while(good_uname(uname) != -3 and uname != "q" and uname != "Q"):
@@ -190,7 +190,7 @@ def login():
         uname = input("@pv> ")
 
     # if the user chose to quit
-    if uname == "q" or uname == "Q": return "", "", ""
+    if uname == "q" or uname == "Q": return "", ""
 
     # Fetch the user data
     pw = fetchUserData(uname)
@@ -200,7 +200,9 @@ def login():
     password = input("@pv> ")
 
     # if the user chose to quit
-    if password == "q" or password == "Q": return "", "", ""
+    if password == "q" or password == "Q": return "", ""
+
+    print(Fore.CYAN + "\n>>> Verifying password ...")
 
     # If the password is invalid, ask again
     while (crypto.checkPass(password, pw) == -1 and password != "q" and password != "Q"):
@@ -220,20 +222,20 @@ def fetchUserData(uname):
     pw = ""
     flag = 0
     with open("users/users.txt", "r") as file:
-        idx = 2;
+        idx = 1;
         for line in file:
             idx += 1
             # If the username is a match, set the flag
-            if idx % 3 == 0 and uname == line.strip() and flag != 1:
+            if idx % 2 == 0 and uname == line.strip() and flag != 1:
                 flag = 1
             # Disable the flag
-            elif idx % 3 == 0 and flag == 1:
+            elif idx % 2 == 0 and flag == 1:
                 flag = 0
             # If the flag is set and this is the pw line
-            elif idx % 3 == 1 and flag == 1:
+            elif idx % 2 == 1 and flag == 1:
                 pw = line.strip()
     # return what was found, or report nothing
     if pw != "":
         return pw
     else:
-        return "NULL", "NULL"
+        return "NULL"
