@@ -3,6 +3,7 @@ import bcrypt
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
+from Crypto.Util.Padding import pad
 
 def H(data):
     # Method 1
@@ -22,15 +23,22 @@ def checkPass(password, data):
 
 def encrypt(key, data):
     h = SHA256.new()
-    h.update(key)
+    h.update(key.encode("utf-8"))
     key = h.digest()
+    #print(len(key))
+    #print(key)
 
-    iv = Random.new().read(AES.block_size)
-    cipher = AES.new(key, AES.MODE_CBC, iv)
+    cipher = AES.new(key, AES.MODE_CBC)
+    ct = cipher.encrypt(pad(data.encode("utf-8"), AES.block_size))
+    iv = cipher.iv
 
-    return cipher.encrypt(data), key
+    #iv = Random.new().read(AES.block_size)
+    #cipher = AES.new(key, AES.MODE_CBC, iv)
 
-def decrypt(key, data):
-    plain = AES.new(key, AES.MODE_CBC, iv)
+    return str(ct)
 
-    return plain.decrypt(data)
+def decrypt(key, data, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv = iv)
+    pt = unpad(cipher.decrypt(data), AES.block_size)
+
+    return pt
