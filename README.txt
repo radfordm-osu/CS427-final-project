@@ -11,6 +11,8 @@ by Mitchell Radford, Nour Rahal-Arabi and Michael Carris
      - argon2-cffi 21.3.0
      - colorama v0.4.4
      - pycryptodome
+     - Crypto (from pycryptodome)
+     - base64
 
 
    DIRECTIONS:
