@@ -1,3 +1,8 @@
-dummy
-$2b$12$klmdqBwLQaVssP2yTkaPHu
-$2b$12$klmdqBwLQaVssP2yTkaPHuIX9Cos8hufqMRN.XzZfDs58kKI6WysK
+jack
+$argon2id$v=19$m=1048576,t=16,p=4$5qBqqQFfr4ASBTIL3Lcj6g$xUE9ZJ7daqkye8q5Z33V5ZYIRoqPFxvsaoIcY2tKQ5k
+mike
+$argon2id$v=19$m=1048576,t=16,p=4$veXLL+bouHsy98AojNr++A$M8ugOfx4va3bCpTz4qw9+8dzxuxiGCvygGCCN5IlUsk
+john
+$argon2id$v=19$m=1048576,t=16,p=4$zPsYj2MAqprVGor+sjrz8g$jDM7EXvdBpkE4kUgV5pZut1d5P6FySTlbEZ++F111po
+pat
+$argon2id$v=19$m=2097152,t=16,p=4$uvEM08ukLRW/t4JsBjgzoQ$g7zQF+0ClHF2eg3ADqTUEkHg/gCQ/rzrb2BccslCEp8

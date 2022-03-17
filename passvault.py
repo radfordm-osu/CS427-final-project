@@ -23,13 +23,13 @@ def startup():
             choice = input("@pv> ")
 
         if choice == "1":
-            uname, pw, salt = signup.login()
+            uname, pw = signup.login()
             # If the user chose to quit, continue
-            if uname == pw == salt == "":
+            if uname == pw == "":
                 continue
             # Otherwise, play the access loop
             else:
-                access.accessLoop(uname, pw, salt)
+                access.accessLoop(uname, pw)
         # If the user chose to sign up, playe the sign up loop
         elif choice == "2": signup.signup()
         # Otherwise, exit the program

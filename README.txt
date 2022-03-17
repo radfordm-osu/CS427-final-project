@@ -8,7 +8,7 @@ by Mitchell Radford, Nour Rahal-Arabi and Michael Carris
 
    DEPENDENCIES (minimum):
      - Python 3
-     - bcrypt v3.2.0
+     - argon2-cffi 21.3.0
      - colorama v0.4.4
      - hashlib
 
