@@ -51,13 +51,30 @@ def add_service(user, pw):
     if (p_word == "q" or p_word == "3"):
         return 1
 
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "a")
-    ufile.write(crypto.encrypt(pw, s_name) + "\n")
-    ufile.write(crypto.encrypt(pw, u_name) + "\n")
-    ufile.write(crypto.encrypt(pw, p_word) + "\n")
+    # Open the user file and get the existing data
+    lines = ""
+    ufile = open("users/" + user + ".txt", "r")
+    for line in ufile:
+        lines = lines + line
+
     # Close the file and report back
     ufile.close()
+
+    if lines != "":
+        dec_lines = crypto.decrypt(pw, lines, user)
+    else:
+        dec_lines = ""
+
+    # Append to the end
+    dec_lines = dec_lines + s_name + "\n" + u_name + "\n" + p_word + "\n"
+
+    enc_lines = crypto.encrypt(pw, dec_lines, user)
+
+    # Overwrite the file contents
+    ufile = open("users/" + user + ".txt", "w")
+    ufile.write(enc_lines)
+    ufile.close()
+
     print(Fore.GREEN + "\n Data saved for service: " + s_name)
     return 1
 
@@ -65,21 +82,24 @@ def add_service(user, pw):
 # This function will ask a user to change data for a service
 # And update the data
 def change_service(user, pw):
+
+    ptxt = get_file_data(user, pw, 1)
+
     # If the user chooses to quit, close this
     s_name = get_service_name()
     if (s_name == "q" or s_name == "3"):
         return 1
 
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
+    # Parse the data
     idx = 2
     s_name_exists = False
     lines = []
     flag = 0
-    for line in ufile:
+    for line in ptxt:
         idx += 1
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
+
+        if idx % 3 == 0 and s_name == line.strip() and flag != 1:
             flag = 1
             s_name_exists = True
         # Disable the flag
@@ -91,8 +111,8 @@ def change_service(user, pw):
         # Otherwise, append a placeholder
         else:
             lines.append("")
-    # Close the file
-    ufile.close()
+
+    # If a service is not there
     if s_name_exists == False:
         print(Fore.RED + "\n Service '" + s_name + "' does not exist!\n")
         return 1
@@ -106,22 +126,27 @@ def change_service(user, pw):
     if (p_word == "q" or p_word == "3"):
         return 1
 
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "w")
     cnt = -1
+    final = ""
     # Re-write the lines
     for line in lines:
-        # If this is the first empty slot
-        if line == "":
+        # If this is a slot to re-write
+        if len(line) == 0:
             cnt += 1
             if cnt == 0:
-                line = crypto.encrypt(pw, s_name)
+                final += s_name+"\n"
             elif cnt == 1:
-                line = crypto.encrypt(pw, u_name)
+                final += u_name+"\n"
             elif cnt == 2:
-                line = crypto.encrypt(pw, p_word)
-        ufile.write(line + "\n")
-    # Close the file and report back
+                final += p_word+"\n"
+        # Otherwise, append the old content
+        else:
+            final += line.strip() + "\n"
+
+    ctxt = crypto.encrypt(pw, final, user)
+    ufile = open("users/" + user + ".txt", "w")
+    ufile.write(ctxt)
+
     ufile.close()
     print(Fore.GREEN + "\n Data saved for service: " + s_name)
     return 1
@@ -129,49 +154,49 @@ def change_service(user, pw):
 
 # Delete a service for a user
 def delete_service(user, pw):
+
+    ptxt = get_file_data(user, pw, 1)
+
     # If the user chooses to quit, close this
     s_name = get_service_name()
     if (s_name == "q" or s_name == "3"):
         return 1
 
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
+    # Find the lines
     idx = 2
     s_name_exists = False
     lines = []
     flag = 0
-    for line in ufile:
+    final = ""
+    for line in ptxt:
         idx += 1
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
+        if idx % 3 == 0 and s_name == line.strip() and flag != 1:
             flag = 1
             s_name_exists = True
-        # Disable the flag
-        elif idx % 3 == 0 and flag == 1:
-            flag = 0
-        # If the flag is not set, copy the line into an array
-        if flag == 0:
-            lines.append(line.strip())
-        # Otherwise, append a placeholder
+        # Ignore the line
+        if flag == 1:
+            # Reset the flag
+            if idx % 3 == 2:
+                flag = 0
+        # Copy the line
         else:
-            lines.append("")
-    # Close the file
-    ufile.close()
+            final = final + line.strip() + "\n"
 
     # If the service is not defined for this user, report and return
     if s_name_exists == False:
         print(Fore.RED + "\n Service '" + s_name + "' does not exist!\n")
         return 1
 
+    if final != "":
+        # Re-encrypt everything
+        ctxt = crypto.encrypt(pw, final, user)
+    else:
+        ctxt = ""
+
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "w")
-    cnt = 0
-    # Re-write the lines
-    for line in lines:
-        # If this is NOT an empty slot
-        if line != "":
-            ufile.write(line + "\n")
-    # Close the file and report back
+    ufile = open("users/" + user + ".txt", "w")
+    ufile.write(ctxt)
     ufile.close()
     print(Fore.GREEN + "\n Removed data for service: " + s_name + "\n")
     return 1
@@ -179,57 +204,57 @@ def delete_service(user, pw):
 
 # Print all service names for a user
 def print_services(user, pw):
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
+    ptxt = get_file_data(user, pw, 1)
     idx = 2
     s_name_exists = False
     names = []
-    for line in ufile:
+    for line in ptxt:
         idx += 1
         # If this is a service name, keep it
         if idx % 3 == 0:
             names.append(line.strip())
-    # Close the file
-    ufile.close()
 
     print(Fore.CYAN + "\n\n#=#=#=#=#=#=#=#=#=#=#=#=#")
     print(Fore.GREEN + "- Service names for " + user + " -")
     print(Fore.CYAN + "#=#=#=#=#=#=#=#=#=#=#=#=#")
     loop = 1
     for name in names:
-        print("\n " + str(loop) + "- " + crypto.decrypt(pw, name))
+        if (name != ""):
+            print("\n " + str(loop) + "- " + name)
         loop += 1
     print("\n")
     return 1
 
 
 def print_service_data(user, pw):
+
+    ptxt = get_file_data(user, pw, 1)
+
+
     # If the user chooses to quit, close this
     s_name = input_service_name()
     if (s_name == "q" or s_name == "3"):
         return 1
 
-    # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
     idx = 2
     s_name_exists = False
     lines = []
     flag = 0
-    for line in ufile:
+    for line in ptxt:
         idx += 1
+        # Disable the flag
+        if idx % 3 == 0 and flag == 1:
+            flag = 0
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
+        if idx % 3 == 0 and s_name == line.strip() and flag != 1:
             flag = 1
             s_name_exists = True
-        # Disable the flag
-        elif idx % 3 == 0 and flag == 1:
-            flag = 0
-        if idx % 3 == 1:
-            u_name = crypto.decrypt(pw, line.strip())
-        if idx % 3 == 2:
-            p_word = crypto.decrypt(pw, line.strip())
-    # Close the file
-    ufile.close()
+        # If the flag is set
+        if flag == 1:
+            if idx % 3 == 1:
+                u_name = line.strip()
+            if idx % 3 == 2:
+                p_word = line.strip()
 
     # If the service is not defined for this user, report and return
     if s_name_exists == False:
@@ -326,3 +351,23 @@ def get_password(s_name):
     if verify_usr == "3": return "3"
     # Otherwise return the service name
     return pw
+
+def get_file_data(user, pw, mode):
+    # Open the user file and get the existing data
+    lines = ""
+    ufile = open("users/" + user + ".txt", "r")
+    for line in ufile:
+        lines = lines + line
+    # Close the file and report back
+    ufile.close()
+
+    if lines != "":
+        dec_lines = crypto.decrypt(pw, lines, user)
+    else:
+        dec_lines = ""
+    if mode == 0:
+        return dec_lines
+    else:
+        final_lines = []
+        final_lines = dec_lines.split("\n")
+        return final_lines

@@ -54,7 +54,7 @@ def signup():
     register(uname, pw)
 
     # Create a file for the user
-    ufile = open("users/" + crypto.encrypt(pw, uname) + ".txt", "w")
+    ufile = open("users/" + uname + ".txt", "w")
     ufile.close()
 
 
