@@ -56,6 +56,7 @@ def add_service(user, pw):
     ufile = open("users/" + user + ".txt", "r")
     for line in ufile:
         lines = lines + line
+
     # Close the file and report back
     ufile.close()
 
@@ -97,6 +98,7 @@ def change_service(user, pw):
     for line in ptxt:
         idx += 1
         # If the service name is a match, set the flag
+
         if idx % 3 == 0 and s_name == line.strip() and flag != 1:
             flag = 1
             s_name_exists = True
@@ -144,6 +146,7 @@ def change_service(user, pw):
     ctxt = crypto.encrypt(pw, final, user)
     ufile = open("users/" + user + ".txt", "w")
     ufile.write(ctxt)
+
     ufile.close()
     print(Fore.GREEN + "\n Data saved for service: " + s_name)
     return 1
@@ -201,7 +204,6 @@ def delete_service(user, pw):
 
 # Print all service names for a user
 def print_services(user, pw):
-
     ptxt = get_file_data(user, pw, 1)
     idx = 2
     s_name_exists = False

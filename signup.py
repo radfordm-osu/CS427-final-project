@@ -54,7 +54,6 @@ def signup():
     register(uname, pw)
 
     # Create a file for the user
-    filenames = os.listdir("users/")
     ufile = open("users/" + uname + ".txt", "w")
     ufile.close()
 
@@ -105,7 +104,6 @@ def register(name, password):
     # hash the password for storage
     pw = crypto.H(password)
     ufile.write(name)
-    ufile.write("\n")
     ufile.write("\n")
     ufile.write(pw)
     ufile.write("\n")

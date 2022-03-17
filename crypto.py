@@ -1,5 +1,4 @@
 from hashlib import sha256
-import bcrypt
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
@@ -22,12 +21,7 @@ def checkPass(password, data):
 	else:
 		return -1
 
-def write_iv(iv, uname):
-    idx = 0
-    line_no = 0
-    with open("users/users.txt", "r") as file:
-        data = file.readlines()
-
+def write_iv(key, data):
     # Get the line number of the
     with open("users/users.txt", "r") as file:
         for line in file:
@@ -41,8 +35,6 @@ def write_iv(iv, uname):
     with open("users/users.txt", "w") as file:
         for i in range(0, len(data)):
             file.write(data[i].strip()+"\n")
-
-        #file.writelines(str(data))
 
 def get_iv(uname):
     idx = 0
@@ -91,3 +83,4 @@ def decrypt(key, data, uname):
     d2 = b64decode(data)
     pt = unpad(cipher.decrypt(d2), AES.block_size)
     return pt.decode("utf-8")
+
