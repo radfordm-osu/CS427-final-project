@@ -7,7 +7,7 @@ import os
 
 # This file will contain the user process
 # to actually access and save data
-def accessLoop(user, pw, salt):
+def accessLoop(user, pw):
     print(Fore.CYAN + "\n\n#=#=#=#=#=#=#=#=#=#=#=#=#")
     print(Fore.GREEN + "- Welcome, " + user + " -")
     print(Fore.CYAN + "#=#=#=#=#=#=#=#=#=#=#=#=#")
@@ -20,22 +20,22 @@ def accessLoop(user, pw, salt):
             print("\n 1- add service (existing user)\n 2- edit service\n 3- remove service\n 4- view service names\n 5- view data for a service\n 6- logout")
             choice = input("@pv> ")
         if choice == "1":
-            add_service(user, pw, salt)
+            add_service(user, pw)
         elif choice == "2":
-            change_service(user, pw, salt)
+            change_service(user, pw)
         elif choice == "3":
-            delete_service(user, pw, salt)
+            delete_service(user, pw)
         elif choice == "4":
-            print_services(user, pw, salt)
+            print_services(user, pw)
         elif choice == "5":
-            print_service_data(user, pw, salt)
+            print_service_data(user, pw)
         # Log the user out
         elif choice == "6":
             return 1
 
 # This function will prompt the user to create a new service
 # and write the data to a file
-def add_service(user, pw, salt):
+def add_service(user, pw):
     # If the user chooses to quit, close this
     s_name = get_service_name()
     if (s_name == "q" or s_name == "3"):
@@ -64,7 +64,7 @@ def add_service(user, pw, salt):
 
 # This function will ask a user to change data for a service
 # And update the data
-def change_service(user, pw, salt):
+def change_service(user, pw):
     # If the user chooses to quit, close this
     s_name = get_service_name()
     if (s_name == "q" or s_name == "3"):
@@ -128,7 +128,7 @@ def change_service(user, pw, salt):
 
 
 # Delete a service for a user
-def delete_service(user, pw, salt):
+def delete_service(user, pw):
     # If the user chooses to quit, close this
     s_name = get_service_name()
     if (s_name == "q" or s_name == "3"):
@@ -178,7 +178,7 @@ def delete_service(user, pw, salt):
 
 
 # Print all service names for a user
-def print_services(user, pw, salt):
+def print_services(user, pw):
     # Open the user file
     ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "r")
     idx = 2
@@ -203,7 +203,7 @@ def print_services(user, pw, salt):
     return 1
 
 
-def print_service_data(user, pw, salt):
+def print_service_data(user, pw):
     # If the user chooses to quit, close this
     s_name = input_service_name()
     if (s_name == "q" or s_name == "3"):

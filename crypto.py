@@ -4,22 +4,21 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
 from Crypto.Util.Padding import pad
+import argon2
 
 def H(data):
-    # Method 1
-#    hash = sha256()
-#    hash.update(data)
-#    final = hash.hexdigest()
-    #salt = bcrypt.gensalt()
-    #final = bcrypt.hashpw(data.encode('utf-8'), salt)
-    return data, data
+	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
+	final = ph.hash(data)
+	return final
 
 def checkPass(password, data):
     # Hash the password against the hash
-    #if bcrypt.checkpw(password.encode('utf-8'), data.encode('utf-8'))
-    return 1
-   # else:
-   #     return -1
+    #if bcrypt.checkpw(password.encode('utf-8'), data.encode('utf-8')):
+	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
+	if ph.verify(data, password):
+		return 1
+	else:
+		return -1
 
 def write_iv(iv, uname):
     idx = 0
