@@ -55,6 +55,7 @@ def write_iv(iv, uname):
         for i in range(0, len(data)):
             file.write(data[i].strip()+"\n")
 
+	
 def get_iv(uname):
     idx = 0
     line_no = 0
@@ -74,25 +75,23 @@ def get_iv(uname):
 
 def encrypt(key, data, uname):
     key1 = H2(key.encode("utf-8"))
-
+    #Generates a cipher with a hash of master password as the key
     cipher = AES.new(key1, AES.MODE_CBC)
+    #Encrypts the data with the generated AES cipher
     ct = cipher.encrypt(pad(data.encode("utf-8"), AES.block_size))
     ct_use = b64encode(ct).decode("utf-8")
     iv = cipher.iv
-    print(ct)
+    #Writes the ciphertext to the user's file
     write_iv(iv, uname)
-
-    #iv = Random.new().read(AES.block_size)
-    #cipher = AES.new(key, AES.MODE_CBC, iv)
-
     return ct_use
 
 def decrypt(key, data, uname):
-
+    #Regenerates the key from the user's master password
     key1 = H2(key.encode("utf-8"))
-
     iv = get_iv(uname)
+    #Uses the key and generates a cipher to decrypt
     cipher = AES.new(key1, AES.MODE_CBC, iv)
     d2 = b64decode(data)
+    #Decrypts the ciphertext and returns the plaintext
     pt = unpad(cipher.decrypt(d2), AES.block_size)
     return pt.decode("utf-8")
