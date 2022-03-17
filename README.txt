@@ -10,7 +10,8 @@ by Mitchell Radford, Nour Rahal-Arabi and Michael Carris
      - Python 3
      - argon2-cffi 21.3.0
      - colorama v0.4.4
-     - hashlib
+     - pycryptodome
+
 
    DIRECTIONS:
      1) Go to the root directory in a command terminal
