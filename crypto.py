@@ -1,4 +1,3 @@
-from hashlib import sha256
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
@@ -8,20 +7,31 @@ from base64 import b64encode
 from base64 import b64decode
 import argon2
 
+#Argon2 Hash of data
 def H(data):
+	#Uses settings defined in security write up and from Argon2 report
+	#Time cost of 6 iterative passes over memory
+	#Memory cost of 2 GBs
+	#Parallelism of 8 threads
+	#Hash length of 256 bits
+	#Salt length of 128 bits
 	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
 	final = ph.hash(data)
 	return final
 
+#Checks the hash against user inputted master password
 def checkPass(password, data):
-    # Hash the password against the hash
 	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
 	if ph.verify(data, password):
+		#If the stored hash is the same as the master password
 		return 1
 	else:
+		#If the stored hash is different than the inputted master password
 		return -1
 
+#Runs the AES key encryption on the master password
 def H2(data):
+	#Uses same settings as before, but static salt so that the key stays consistent between runs
 	final = argon2.hash_password_raw(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, password=data, salt=b'saltysaltsalter')
 	return final
 
