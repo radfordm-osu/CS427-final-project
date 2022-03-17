@@ -21,8 +21,17 @@ def checkPass(password, data):
 	else:
 		return -1
 
-def write_iv(key, data):
-    # Get the line number of the
+def H2(data):
+	final = argon2.hash_password_raw(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, password=data, salt=b'saltysaltsalter')
+	return final
+
+def write_iv(iv, uname):
+    idx = 0
+    line_no = 0
+    # Get the data
+    with open("users/users.txt", "r") as file:
+        data = file.readlines()
+    # Get the line number of the iv
     with open("users/users.txt", "r") as file:
         for line in file:
             idx += 1
@@ -54,13 +63,9 @@ def get_iv(uname):
     return iv
 
 def encrypt(key, data, uname):
-    #h = SHA256.new()
-    #h.update(key.encode("utf-8"))
-    #key = h.digest()
-    #print(len(key))
-    #print(key)
+    key1 = H2(key.encode("utf-8"))
 
-    cipher = AES.new(key.encode("utf-8"), AES.MODE_CBC)
+    cipher = AES.new(key1, AES.MODE_CBC)
     ct = cipher.encrypt(pad(data.encode("utf-8"), AES.block_size))
     ct_use = b64encode(ct).decode("utf-8")
     iv = cipher.iv
@@ -74,13 +79,10 @@ def encrypt(key, data, uname):
 
 def decrypt(key, data, uname):
 
-    #h = SHA256.new()
-    #h.update(key.encode("utf-8"))
-    #key = h.digest()
+    key1 = H2(key.encode("utf-8"))
 
     iv = get_iv(uname)
-    cipher = AES.new(key.encode("utf-8"), AES.MODE_CBC, iv)
+    cipher = AES.new(key1, AES.MODE_CBC, iv)
     d2 = b64decode(data)
     pt = unpad(cipher.decrypt(d2), AES.block_size)
     return pt.decode("utf-8")
-

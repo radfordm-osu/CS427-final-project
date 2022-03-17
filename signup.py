@@ -57,6 +57,8 @@ def signup():
     ufile = open("users/" + uname + ".txt", "w")
     ufile.close()
 
+    print(Fore.GREEN + "\n >>> Successfully registered a new account!\n")
+
 
 # Have the user set a password, then save it
 def set_password():
@@ -104,6 +106,7 @@ def register(name, password):
     # hash the password for storage
     pw = crypto.H(password)
     ufile.write(name)
+    ufile.write("\n")
     ufile.write("\n")
     ufile.write(pw)
     ufile.write("\n")
@@ -222,17 +225,17 @@ def fetchUserData(uname):
     pw = ""
     flag = 0
     with open("users/users.txt", "r") as file:
-        idx = 1;
+        idx = 2;
         for line in file:
             idx += 1
             # If the username is a match, set the flag
-            if idx % 2 == 0 and uname == line.strip() and flag != 1:
+            if idx % 3 == 0 and uname == line.strip() and flag != 1:
                 flag = 1
             # Disable the flag
-            elif idx % 2 == 0 and flag == 1:
+            elif idx % 3 == 0 and flag == 1:
                 flag = 0
             # If the flag is set and this is the pw line
-            elif idx % 2 == 1 and flag == 1:
+            elif idx % 3 == 2 and flag == 1:
                 pw = line.strip()
     # return what was found, or report nothing
     if pw != "":

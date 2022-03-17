@@ -60,6 +60,8 @@ def add_service(user, pw):
     # Close the file and report back
     ufile.close()
 
+    print(Fore.CYAN + "\n >>> Processing. Please wait...\n")
+
     if lines != "":
         dec_lines = crypto.decrypt(pw, lines, user)
     else:
@@ -143,6 +145,8 @@ def change_service(user, pw):
         else:
             final += line.strip() + "\n"
 
+    print(Fore.CYAN + "\n >>> Processing. Please wait...\n")
+
     ctxt = crypto.encrypt(pw, final, user)
     ufile = open("users/" + user + ".txt", "w")
     ufile.write(ctxt)
@@ -187,6 +191,8 @@ def delete_service(user, pw):
     if s_name_exists == False:
         print(Fore.RED + "\n Service '" + s_name + "' does not exist!\n")
         return 1
+
+    print(Fore.CYAN + "\n >>> Processing. Please wait...\n")
 
     if final != "":
         # Re-encrypt everything
@@ -353,6 +359,9 @@ def get_password(s_name):
     return pw
 
 def get_file_data(user, pw, mode):
+
+    print(Fore.CYAN + "\n >>> Processing. Please wait...\n")
+
     # Open the user file and get the existing data
     lines = ""
     ufile = open("users/" + user + ".txt", "r")
