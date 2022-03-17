@@ -1,5 +1,4 @@
 import crypto
-from hashlib import sha256
 from colorama import init, Fore
 import string
 import random
