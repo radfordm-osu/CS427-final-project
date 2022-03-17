@@ -9,10 +9,10 @@ import os
 def getUsers():
     users = []
     with open("users/users.txt", "r") as file:
-        idx = 1;
+        idx = 2;
         for line in file:
             idx += 1
-            if idx % 2 == 0:
+            if idx % 3 == 0:
                 users.append(line.strip())
     # return what was found
     return users
@@ -186,7 +186,7 @@ def login():
     if uname == "q" or uname == "Q": return "", ""
 
     # Tell the user what went wrong and re-take input
-    while(good_uname(uname) != -3 and uname != "q" and uname != "Q"):
+    while(not (uname in getUsers()) and uname != "q" and uname != "Q"):
         print(Fore.RED + "\n User does not exist!")
         print(">>> Enter your username, or 'q' to cancel login")
         uname = input("@pv> ")

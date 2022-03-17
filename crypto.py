@@ -22,12 +22,11 @@ def H(data):
 #Checks the hash against user inputted master password
 def checkPass(password, data):
 	ph = argon2.PasswordHasher(time_cost=6, memory_cost=2097152, parallelism=4, hash_len=32, salt_len=16)
-	if ph.verify(data, password):
-		#If the stored hash is the same as the master password
-		return 1
-	else:
-		#If the stored hash is different than the inputted master password
+	try:
+		ph.verify(data, password)
+	except:
 		return -1
+	return 1
 
 #Runs the AES key encryption on the master password
 def H2(data):
@@ -55,7 +54,7 @@ def write_iv(iv, uname):
         for i in range(0, len(data)):
             file.write(data[i].strip()+"\n")
 
-	
+
 def get_iv(uname):
     idx = 0
     line_no = 0
@@ -74,6 +73,7 @@ def get_iv(uname):
     return iv
 
 def encrypt(key, data, uname):
+
     key1 = H2(key.encode("utf-8"))
     #Generates a cipher with a hash of master password as the key
     cipher = AES.new(key1, AES.MODE_CBC)

@@ -186,6 +186,8 @@ def delete_service(user, pw):
         else:
             final = final + line.strip() + "\n"
 
+    final = final[:-1]
+
     # If the service is not defined for this user, report and return
     if s_name_exists == False:
         print(Fore.RED + "\n Service '" + s_name + "' does not exist!\n")
