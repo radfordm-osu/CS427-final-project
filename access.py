@@ -52,10 +52,10 @@ def add_service(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "a")
-    ufile.write(crypto.encrypt(pw, s_name, user) + "\n")
-    ufile.write(crypto.encrypt(pw, u_name, user) + "\n")
-    ufile.write(crypto.encrypt(pw, p_word, user) + "\n")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "a")
+    ufile.write(crypto.encrypt(pw, s_name) + "\n")
+    ufile.write(crypto.encrypt(pw, u_name) + "\n")
+    ufile.write(crypto.encrypt(pw, p_word) + "\n")
     # Close the file and report back
     ufile.close()
     print(Fore.GREEN + "\n Data saved for service: " + s_name)
@@ -71,7 +71,7 @@ def change_service(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "r")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
     idx = 2
     s_name_exists = False
     lines = []
@@ -79,7 +79,7 @@ def change_service(user, pw):
     for line in ufile:
         idx += 1
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip(), user) and flag != 1:
+        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
             flag = 1
             s_name_exists = True
         # Disable the flag
@@ -107,7 +107,7 @@ def change_service(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "w")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "w")
     cnt = -1
     # Re-write the lines
     for line in lines:
@@ -115,11 +115,11 @@ def change_service(user, pw):
         if line == "":
             cnt += 1
             if cnt == 0:
-                line = crypto.encrypt(pw, s_name, user)
+                line = crypto.encrypt(pw, s_name)
             elif cnt == 1:
-                line = crypto.encrypt(pw, u_name, user)
+                line = crypto.encrypt(pw, u_name)
             elif cnt == 2:
-                line = crypto.encrypt(pw, p_word, user)
+                line = crypto.encrypt(pw, p_word)
         ufile.write(line + "\n")
     # Close the file and report back
     ufile.close()
@@ -135,7 +135,7 @@ def delete_service(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "r")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
     idx = 2
     s_name_exists = False
     lines = []
@@ -143,7 +143,7 @@ def delete_service(user, pw):
     for line in ufile:
         idx += 1
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip(), user) and flag != 1:
+        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
             flag = 1
             s_name_exists = True
         # Disable the flag
@@ -164,7 +164,7 @@ def delete_service(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "w")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "w")
     cnt = 0
     # Re-write the lines
     for line in lines:
@@ -180,7 +180,7 @@ def delete_service(user, pw):
 # Print all service names for a user
 def print_services(user, pw):
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "r")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
     idx = 2
     s_name_exists = False
     names = []
@@ -197,7 +197,7 @@ def print_services(user, pw):
     print(Fore.CYAN + "#=#=#=#=#=#=#=#=#=#=#=#=#")
     loop = 1
     for name in names:
-        print("\n " + str(loop) + "- " + crypto.decrypt(pw, name, user))
+        print("\n " + str(loop) + "- " + crypto.decrypt(pw, name))
         loop += 1
     print("\n")
     return 1
@@ -210,7 +210,7 @@ def print_service_data(user, pw):
         return 1
 
     # Open the user file
-    ufile = open("users/" + crypto.encrypt(pw, user, user) + ".txt", "r")
+    ufile = open("users/" + crypto.encrypt(pw, user) + ".txt", "r")
     idx = 2
     s_name_exists = False
     lines = []
@@ -218,16 +218,16 @@ def print_service_data(user, pw):
     for line in ufile:
         idx += 1
         # If the service name is a match, set the flag
-        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip(), user) and flag != 1:
+        if idx % 3 == 0 and s_name == crypto.decrypt(pw, line.strip()) and flag != 1:
             flag = 1
             s_name_exists = True
         # Disable the flag
         elif idx % 3 == 0 and flag == 1:
             flag = 0
         if idx % 3 == 1:
-            u_name = crypto.decrypt(pw, line.strip(), user)
+            u_name = crypto.decrypt(pw, line.strip())
         if idx % 3 == 2:
-            p_word = crypto.decrypt(pw, line.strip(), user)
+            p_word = crypto.decrypt(pw, line.strip())
     # Close the file
     ufile.close()
 
